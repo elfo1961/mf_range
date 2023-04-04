@@ -71,7 +71,7 @@ class Range {
         // l == 1 => { start = 0; stop = args[0]}
         // l  > 1 => { start = args[0], stop = args[1], step = args[2], precision = args[3]}
         if (!l || l > 4) {
-            throw new RangeError('Usage: Range(arg1, arg2?, arg3?, arg4?])');
+            throw new RangeError('Usage: Range(arg1, arg2?, arg3?, arg4?)');
         }
         this.#setParams;
         this.#stringRange = false;  // default is Range of integers
@@ -96,7 +96,7 @@ class Range {
         return [...this.#_elements];
     }
 
-    get charCodes() {
+    get utfCharCodes() {
         const back = this.list.map(elem => {
             if (this.#stringRange) {
                 return elem.charCodeAt(0);

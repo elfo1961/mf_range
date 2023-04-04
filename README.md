@@ -73,7 +73,15 @@ to a function. So, passing 1.00 as _step_ will give a _precision_ = 0.
 You must provide an explicit _precision_ argument or pass _step_ as string ('1.00');
 
 ## Properties and Methods
-The Range Class has only getter methods. All properties will be private;
+The Range Class has only getter methods. All properties are private;
+
+### Range Parameters
+
+- start: returns the range lower boundary;
+- stop: returns the range upper boundary (excluded in resulting sequence);
+- step: returns the range increment;
+- precision: returns the numerical elements precision
+- params: returns an Object with all of the above
 
 ### list:
 

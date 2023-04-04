@@ -1,6 +1,6 @@
 # TODO
-- store arguments in private properties;
-- Improve documentation (README);
+x store arguments in private properties;
+x Improve documentation (README);
 - Create test script;
 - publish on npm repo;
 - create ES6 module;

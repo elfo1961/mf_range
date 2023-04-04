@@ -2,56 +2,50 @@
 class Range {
     #stringRange;   // true for range of charaters
     #_elements;     // the resulting array
+    #_start;        // start boundary
+    #_stop;         // stop boundary
+    #_step;         // range increment
+    #_precision;    // decimal places (numbers only)
     #setParams = () => {
         const re = /^-?[\d]{1,}(\.[\d]{1,})?$/;   // match numbers provided as strings
-        // convert string params to numeric.
-        /*        if (typeof (this.start) == 'string' && re.test(this.start)) {
-                    console.warn('start: converting string to number');
-                    this.start = +this.start;
-                }
-                if (typeof (this.stop) == 'string' && re.test(this.stop)) {
-                    console.warn('stop: converting string to number');
-                    this.stop = +this.stop;
-                }
-        */
         // checks and normalize step
-        if (typeof (this.step) == 'string') {
-            if (re.test(this.step)) {
-                this.step = +this.step;
+        if (typeof (this.#_step) == 'string') {
+            if (re.test(this.#_step)) {
+                this.#_step = +this.#_step;
             } else {
                 throw new TypeError('step: must be a numerical value > 0');
             }
         }
-        this.step = Math.abs(this.step);    // step must be > 0
-        if (!this.step) {
+        this.#_step = Math.abs(this.#_step);    // step must be > 0
+        if (!this.#_step) {
             throw new TypeError('step: must be a numerical value > 0');
         }
         // check if is numeric or characters range
-        if (typeof (this.start) == 'string') {
-            if (this.start.length > 1) {
+        if (typeof (this.#_start) == 'string') {
+            if (this.#_start.length > 1) {
                 throw new TypeError('strings range not (yet) implemented');
             } else {
-                this.start = this.start.charCodeAt(0);
+                this.#_start = this.#_start.charCodeAt(0);
                 this.#stringRange = true;
             }
         }
-        if (typeof (this.stop) == 'string') {
-            if (this.stop.length > 1) {
+        if (typeof (this.#_stop) == 'string') {
+            if (this.#_stop.length > 1) {
                 throw new TypeError('strings range not (yet) implemented');
             } else {
-                this.stop = this.stop.charCodeAt(0);
+                this.#_stop = this.#_stop.charCodeAt(0);
                 this.#stringRange = true;
             }
         }
         if (this.#stringRange) {
             console.warn('characterRange: precision  must be 0 and step must be a positive integer. Normalized.');
-            this.precision = 0; // no decimal allowed
-            this.step = +this.step.toFixed();    // integer step only
+            this.#_precision = 0; // no decimal allowed
+            this.#_step = +this.#_step.toFixed();    // integer step only
         }
         // start must be < stop
-        const arr = [this.start, this.stop].sort((a, b) => (a - b));
-        this.start = arr[0];
-        this.stop = arr[1];
+        const arr = [this.#_start, this.#_stop].sort((a, b) => (a - b));
+        this.#_start = arr[0];
+        this.#_stop = arr[1];
     };
     constructor(...args) {
         function getPrecision(value) {
@@ -75,16 +69,16 @@ class Range {
         }
         this.#setParams;
         this.#stringRange = false;  // default is Range of integers
-        this.start = 0;
-        this.stop = args[0];
-        this.step = (args[2] ? args[2] : 1);
-        this.precision = (args[3] ? +args[3] : getPrecision(this.step));
-        if (isNaN(this.precision) || getPrecision(this.precision)) {
+        this.#_start = 0;
+        this.#_stop = args[0];
+        this.#_step = (args[2] ? args[2] : 1);
+        this.#_precision = (args[3] ? +args[3] : getPrecision(this.#_step));
+        if (isNaN(this.#_precision) || getPrecision(this.#_precision)) {
             throw new TypeError('Precision: must be an integer >= 0');
         }
         if (l > 1) {
-            this.start = args[0];
-            this.stop = args[1];
+            this.#_start = args[0];
+            this.#_stop = args[1];
         }
         this.#setParams();
     }
@@ -108,9 +102,30 @@ class Range {
         return back;
     }
 
+    get start() {
+        return this.#_start;
+    }
+    get stop() {
+        return this.#_stop;
+    }
+    get step() {
+        return this.#_step;
+    }
+    get precision() {
+        return this.#_precision;
+    }
+    get params() {
+        return {
+            "start": this.start,
+            "stop": this.stop,
+            "step": this.step,
+            "precision": this.precision
+        }
+    }
+
     #createRange() {
-        for (let i = this.start; i < this.stop; i += this.step) {
-            let elem = +i.toFixed(this.precision);
+        for (let i = this.#_start; i < this.#_stop; i += this.#_step) {
+            let elem = +i.toFixed(this.#_precision);
             if (this.#stringRange) {
                 elem = String.fromCharCode(elem);
             }

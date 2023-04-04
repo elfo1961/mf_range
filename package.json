@@ -1,0 +1,20 @@
+{
+  "type": "commonjs",
+  "name": "mf_range",
+  "version": "1.0.0",
+  "description": "Class Range - Create Range of number or characters",
+  "main": "mf_range.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Range",
+    "util"
+  ],
+  "author": {
+    "name": "elfo61",
+    "email": "elfo1961@gmail.com",
+    "url": "https://linkedin.com/mfazzini"
+  },
+  "license": "ISC"
+}
